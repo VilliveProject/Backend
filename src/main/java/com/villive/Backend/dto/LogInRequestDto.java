@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberLogInRequestDto {
+public class LogInRequestDto {
 
     @JsonProperty("member_id")
     private String memberId;

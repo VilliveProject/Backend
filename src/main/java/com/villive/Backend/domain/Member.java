@@ -1,29 +1,45 @@
 package com.villive.Backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Entity
-@Getter
 @Builder // Lombok 빌더 패턴 구현을 위한 어노테이션
+@Getter
 @NoArgsConstructor // Lombok을 사용하여 기본 생성자 추가
 @AllArgsConstructor // 모든 필드를 매개 변수로 갖는 생성자 추가
 public class Member {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
-    @Column(name = "member_id")
-    private String memberId;
+    private String name;
 
+    @Column(name = "member_id", nullable = false, unique = true)
+    private String memberId; // 아이디
+
+
+    @JsonIgnore // 비밀번호는 민감한 정보이므로, JSON으로 데이터 이동간에 숨김
+    @Column(nullable = false)
     private String password;
 
-    private String address;
+    private String address; // 호수
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+
+    @ManyToOne
+    @JoinColumn(name = "building_code")
+    private Building building;
+
+
 
     public void addUserAuthority() {
         this.role = MemberRole.USER;

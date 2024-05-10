@@ -1,15 +1,15 @@
 package com.villive.Backend.service;
 
-import com.villive.Backend.dto.MemberLogInRequestDto;
-import com.villive.Backend.dto.MemberSignUpRequestDto;
+import com.villive.Backend.dto.LogInRequestDto;
+import com.villive.Backend.dto.SignUpRequestDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface MemberService {
 
-    Long join(MemberSignUpRequestDto requestDto);
+    Long join(SignUpRequestDto requestDto);
 
-    String login(MemberLogInRequestDto requestDto);
+    String login(LogInRequestDto requestDto);
 
 
 }

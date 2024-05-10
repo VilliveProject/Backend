@@ -1,12 +1,11 @@
 package com.villive.Backend.jwt;
 
 import com.villive.Backend.domain.MemberRole;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,10 +15,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class JwtTokenProvider {
@@ -33,6 +32,7 @@ public class JwtTokenProvider {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     // 객체 초기화, secretKey를 Base64로 인코딩
     @PostConstruct
@@ -41,8 +41,8 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String username, MemberRole role) {
-        Claims claims = Jwts.claims().setSubject(username);
+    public String createToken(String userPK, MemberRole role) {
+        Claims claims = Jwts.claims().setSubject(userPK); // JWT payload에 저장되는 정보 단위
         claims.put("roles", Collections.singletonList(role.name()));
 
         Date now = new Date();
@@ -72,17 +72,34 @@ public class JwtTokenProvider {
     // 토큰 유효성, 만료일자 확인
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            byte[] keyBytes = Base64.getDecoder().decode(secretKey.getBytes("UTF-8"));
+            Jws<Claims> claims = Jwts.parser().setSigningKey(keyBytes).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            logger.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e){
+            logger.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e){
+            logger.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e){
+            logger.info("JWT 토큰이 잘못되었습니다.");
+        } catch (UnsupportedEncodingException e) {
+            logger.error("인코딩 방식이 지원되지 않습니다.", e);
         }
+        return false;
     }
 
     // Request의 Header에서 token 값 가져오기
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+        String bearerToken = request.getHeader("Authorization");
+        System.out.println("Extracted Token: " + bearerToken); // 로깅 추가
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
+
+
 
 }
 

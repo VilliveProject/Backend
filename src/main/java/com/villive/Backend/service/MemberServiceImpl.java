@@ -2,8 +2,8 @@ package com.villive.Backend.service;
 
 import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
-import com.villive.Backend.dto.MemberLogInRequestDto;
-import com.villive.Backend.dto.MemberSignUpRequestDto;
+import com.villive.Backend.dto.LogInRequestDto;
+import com.villive.Backend.dto.SignUpRequestDto;
 import com.villive.Backend.jwt.JwtTokenProvider;
 import com.villive.Backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public Long join(MemberSignUpRequestDto requestDto) {
+    public Long join(SignUpRequestDto requestDto) {
         if (memberRepository.findByMemberId(requestDto.getMemberId()).isPresent()) {
             throw new IllegalArgumentException("이미 가입된 유저아이디입니다.");
         }
@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Transactional
     @Override
-    public String login(MemberLogInRequestDto requestDto) {
+    public String login(LogInRequestDto requestDto) {
         Member member = memberRepository.findByMemberId(requestDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("가입된 아이디가 아닙니다."));
         validateMatchedPassword(requestDto.getPassword(), member.getPassword());

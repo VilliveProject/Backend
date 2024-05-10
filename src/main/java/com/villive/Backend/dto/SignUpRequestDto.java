@@ -12,18 +12,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberSignUpRequestDto {
+public class SignUpRequestDto {
 
     @JsonProperty("member_id")
     private String memberId;
     private String password;
+    private String name;
     private String address;
     private MemberRole role;
 
+    /* DTO -> Entity */
     public Member toEntity() {
         return Member.builder()
                 .memberId(memberId)
                 .password(password)
+                .name(name)
                 .address(address)
                 .role(role)
                 .build();

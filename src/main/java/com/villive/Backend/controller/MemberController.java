@@ -1,7 +1,7 @@
 package com.villive.Backend.controller;
 
-import com.villive.Backend.dto.MemberLogInRequestDto;
-import com.villive.Backend.dto.MemberSignUpRequestDto;
+import com.villive.Backend.dto.LogInRequestDto;
+import com.villive.Backend.dto.SignUpRequestDto;
 import com.villive.Backend.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +17,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public Long join(@RequestBody MemberSignUpRequestDto requestDto) {
+    public Long join(@RequestBody SignUpRequestDto requestDto) {
 
         return memberService.join(requestDto);
 
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody MemberLogInRequestDto requestDto) {
+    public String login(@RequestBody LogInRequestDto requestDto) {
 
         return memberService.login(requestDto);
 
