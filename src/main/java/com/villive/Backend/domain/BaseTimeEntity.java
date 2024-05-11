@@ -25,7 +25,7 @@ abstract class BaseTimeEntity {
     /* 해당 엔티티를 저장하기 이전에 실행 */
     @PrePersist
     public void onPrePersist(){
-        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         this.modifiedDate = this.createdDate;
     }
 

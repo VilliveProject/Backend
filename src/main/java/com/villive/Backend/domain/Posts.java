@@ -34,9 +34,9 @@ public class Posts extends BaseTimeEntity {
     private Member member;
 
 
-    @OneToMany(mappedBy = "posts", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
     @OrderBy("id asc") // 댓글 정렬
-    private List<Comment> comment = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     public Posts(PostsRequestDto requestDto, Member member) {
         this.title = requestDto.getTitle();
@@ -47,7 +47,7 @@ public class Posts extends BaseTimeEntity {
         this.member = member;
     }
 
-    public Posts(Long id, String title, String contents, String writer, Boolean isAnonymous, PostCategory category, Member member, List<Comment> comment) {
+    public Posts(Long id, String title, String contents, String writer, Boolean isAnonymous, PostCategory category, Member member, List<Comment> commentList) {
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -55,12 +55,14 @@ public class Posts extends BaseTimeEntity {
         this.isAnonymous = isAnonymous;
         this.category = category;
         this.member = member;
-        this.comment = comment;
+        this.commentList = commentList;
     }
 
-
+    // 게시글 수정
     public void update(PostsRequestDto postsRequestDto) {
         this.title = postsRequestDto.getTitle();
         this.contents = postsRequestDto.getContents();
     }
+
+
 }

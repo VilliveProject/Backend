@@ -1,5 +1,6 @@
 package com.villive.Backend.jwt;
 
+import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
@@ -67,6 +68,7 @@ public class JwtTokenProvider {
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
+
 
 
     // 토큰 유효성, 만료일자 확인

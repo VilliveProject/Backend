@@ -7,24 +7,20 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@RequiredArgsConstructor
 @Getter
 public class CommentResponseDto {
     private Long id;
     private String content;
-    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
-    private String memberId;
-    private Long userId;
-    private Long postsId;
+    private Boolean isAnonymous;
+    private String writer;
+    private String createdDate;
 
-
-    /* Entity -> Dto*/
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
-        this.createdDate = comment.getCreatedDate();
-        this.memberId = comment.getMember().getMemberId();
-        this.userId = comment.getMember().getId();
-        this.postsId = comment.getPosts().getId();
+        this.isAnonymous = comment.getIsAnonymous();
+        this.writer = comment.getWriter();
+        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
     }
 }
+

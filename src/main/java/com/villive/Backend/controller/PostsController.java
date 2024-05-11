@@ -4,7 +4,6 @@ import com.villive.Backend.dto.PostsRequestDto;
 import com.villive.Backend.dto.PostsResponseDto;
 import com.villive.Backend.service.PostsService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +47,7 @@ public class PostsController {
     }
 
     // 게시글 삭제
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePosts(@PathVariable Long id, HttpServletRequest request){
         postsService.deletePosts(id, request);
         return ResponseEntity.ok().body("게시글이 삭제되었습니다.");
