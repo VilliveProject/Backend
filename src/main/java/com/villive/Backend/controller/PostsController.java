@@ -1,48 +1,56 @@
 package com.villive.Backend.controller;
 
-import com.villive.Backend.domain.Posts;
 import com.villive.Backend.dto.PostsRequestDto;
 import com.villive.Backend.dto.PostsResponseDto;
 import com.villive.Backend.service.PostsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.security.SecurityUtil;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
+@Tag(name = "게시판", description = "게시판 API")
 public class PostsController {
 
     private final PostsService postsService;
 
-
-    /*
-    @PostMapping("/add")
-    public String create(@RequestBody PostsRequestDto requestDto){
-
-        Long posts = postsService.save(requestDto);
-
-        return "success";
+    // 게시판 조회
+    @GetMapping("/")
+    public ResponseEntity<List<PostsResponseDto>> getPostsList() {
+        return ResponseEntity.ok(postsService.getPostsList());
     }
 
-     */
-
-    /*
-    @PostMapping("/add")
-    public Long save(@RequestBody PostsRequestDto requestdto) {
-        return postsService.save(requestdto);
+    // 게시글 선택 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<PostsResponseDto> getPosts(@PathVariable Long id){
+        return ResponseEntity.ok(postsService.getPosts(id));
     }
-    */
 
-
-
-
-    @PostMapping("/add")
+    // 게시글 작성
+    @Operation(summary = "게시글 작성", description = "게시글을 작성한다.")
+    @PostMapping("/write")
     public ResponseEntity<PostsResponseDto> createPosts(@RequestBody PostsRequestDto postsRequestDto, HttpServletRequest request){
         PostsResponseDto responseDto = postsService.createPosts(postsRequestDto, request);
         return ResponseEntity.ok(responseDto);
+    }
+    
+    // 게시글 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<PostsResponseDto> updatePosts(@PathVariable Long id, @RequestBody PostsRequestDto postsRequestDto, HttpServletRequest request){
+        return ResponseEntity.ok(postsService.updatePosts(id, postsRequestDto, request));
+    }
+
+    // 게시글 삭제
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deletePosts(@PathVariable Long id, HttpServletRequest request){
+        postsService.deletePosts(id, request);
+        return ResponseEntity.ok().body("게시글이 삭제되었습니다.");
     }
 }

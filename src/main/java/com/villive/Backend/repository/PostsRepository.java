@@ -9,5 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface PostsRepository extends JpaRepository<Posts, Long> {
+    List<Posts> findAllByOrderByCreatedDateDesc();
+
+    // 게시글 id와 사용자 id 일치 여부를 비교하기 위함
+    Optional<Posts> findByIdAndMemberId(Long id, Long memberId);
 
 }

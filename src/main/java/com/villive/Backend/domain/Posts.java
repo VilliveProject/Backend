@@ -2,10 +2,7 @@ package com.villive.Backend.domain;
 
 import com.villive.Backend.dto.PostsRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Builder
+@NoArgsConstructor
 public class Posts extends BaseTimeEntity {
 
     @Id
@@ -61,4 +59,8 @@ public class Posts extends BaseTimeEntity {
     }
 
 
+    public void update(PostsRequestDto postsRequestDto) {
+        this.title = postsRequestDto.getTitle();
+        this.contents = postsRequestDto.getContents();
+    }
 }

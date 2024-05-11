@@ -34,8 +34,9 @@ public class SecurityConfig {
 
 
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/member/join", "/member/login").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/user/**").hasRole("USER") // "/user/**" 형식의 URL로 들어오는 요청에 대해 인증을 요구
                         .anyRequest().authenticated())
 
 
