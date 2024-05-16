@@ -15,18 +15,14 @@ public class CommentRequestDto {
 
     private String content;
 
-    private Boolean isAnonymous;
-
     @Builder
-    public CommentRequestDto(String content, Boolean isAnonymous){
+    public CommentRequestDto(String content){
         this.content = content;
-        this.isAnonymous = isAnonymous;
     }
 
     public Comment toEntity(){
         return Comment.builder()
                 .content(content)
-                .isAnonymous(isAnonymous)
                 .build();
     }
 

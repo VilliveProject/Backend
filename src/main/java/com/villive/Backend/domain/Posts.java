@@ -11,6 +11,7 @@ import java.util.List;
 @Getter @Setter
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Posts extends BaseTimeEntity {
 
     @Id
@@ -22,8 +23,6 @@ public class Posts extends BaseTimeEntity {
     private String contents;
 
     private String writer;
-
-    private Boolean isAnonymous; // 익명 여부
 
     @Enumerated(EnumType.STRING)
     private PostCategory category;
@@ -38,25 +37,18 @@ public class Posts extends BaseTimeEntity {
     @OrderBy("id asc") // 댓글 정렬
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE)
+    private List<PostsLike> PostsLikeList = new ArrayList<>();
+
+
     public Posts(PostsRequestDto requestDto, Member member) {
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.writer =  member.getName();
+        this.writer =  member.getNickname();
         this.category = requestDto.getCategory();
-        this.isAnonymous = requestDto.getIsAnonymous();
         this.member = member;
     }
 
-    public Posts(Long id, String title, String contents, String writer, Boolean isAnonymous, PostCategory category, Member member, List<Comment> commentList) {
-        this.id = id;
-        this.title = title;
-        this.contents = contents;
-        this.writer = writer;
-        this.isAnonymous = isAnonymous;
-        this.category = category;
-        this.member = member;
-        this.commentList = commentList;
-    }
 
     // 게시글 수정
     public void update(PostsRequestDto postsRequestDto) {

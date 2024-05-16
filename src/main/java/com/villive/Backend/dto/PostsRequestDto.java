@@ -12,14 +12,12 @@ public class PostsRequestDto {
 
     private String title;
     private String contents;
-    private Boolean isAnonymous;
     private PostCategory category;
 
     @Builder
-    public PostsRequestDto(String title, String contents, Boolean isAnonymous, PostCategory category){
+    public PostsRequestDto(String title, String contents, PostCategory category){
         this.title = title;
         this.contents = contents;
-        this.isAnonymous = isAnonymous;
         this.category = category;
 
     }
@@ -29,7 +27,6 @@ public class PostsRequestDto {
         return Posts.builder()
                 .title(title)
                 .contents(contents)
-                .isAnonymous(isAnonymous)
                 .category(category)
                 .build();
 

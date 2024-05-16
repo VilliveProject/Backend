@@ -11,14 +11,12 @@ import java.time.format.DateTimeFormatter;
 public class CommentResponseDto {
     private Long id;
     private String content;
-    private Boolean isAnonymous;
     private String writer;
     private String createdDate;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
-        this.isAnonymous = comment.getIsAnonymous();
         this.writer = comment.getWriter();
         this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
     }

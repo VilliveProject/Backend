@@ -5,6 +5,7 @@ import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.Posts;
 import com.villive.Backend.dto.CommentRequestDto;
 import com.villive.Backend.dto.CommentResponseDto;
+import com.villive.Backend.dto.MsgResponseDto;
 import com.villive.Backend.repository.CommentRepository;
 import com.villive.Backend.repository.MemberRepository;
 import com.villive.Backend.repository.PostsRepository;
@@ -23,13 +24,11 @@ public class CommentService {
     private final MemberService memberService;
 
     // 댓글 등록
-    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postsId, HttpServletRequest request){
+    public CommentResponseDto createComment(CommentRequestDto commentRequestDto, Long postsId, Member member){
 
         Posts posts = postsRepository.findById(postsId).orElseThrow(
                 () -> new IllegalArgumentException("게시글을 찾을 수 없습니다.")
         );
-
-        Member member = memberService.getMemberFromToken(request);
 
         Comment comment = new Comment(commentRequestDto, posts, member);
         Comment saveComment = commentRepository.save(comment);
@@ -38,17 +37,18 @@ public class CommentService {
     }
     
     // 댓글 삭제
-    public void deleteComment(Long postsId, Long commentId, HttpServletRequest request){
+    public MsgResponseDto deleteComment(Long postsId, Long commentId, Member member){
 
-        Member member = memberService.getMemberFromToken(request);
 
         Posts posts = postsRepository.findById(postsId).orElseThrow(
                 () -> new IllegalArgumentException("게시글을 찾을 수 없습니다.")
         );
 
-        Comment comment = memberService.findByIdAndMember(commentId, member);
+        Comment comment = memberService.findByCommentAndMember(commentId, member);
 
         commentRepository.delete(comment);
+
+        return new MsgResponseDto("댓글을 삭제했습니다.", HttpStatus.OK.value());
         
     }
 

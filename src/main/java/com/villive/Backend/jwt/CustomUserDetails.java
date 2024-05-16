@@ -24,6 +24,10 @@ public class CustomUserDetails implements UserDetails {
         return auth;
     }
 
+    public Member getMember(){
+        return member;
+    }
+
     @Override
     public String getPassword() {
         return member.getPassword();

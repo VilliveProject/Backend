@@ -20,10 +20,13 @@ public class Member {
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
-    private String name;
 
     @Column(name = "member_id", nullable = false, unique = true)
     private String memberId; // 아이디
+
+    private String nickname;
+
+    private String name;
 
 
     @JsonIgnore // 비밀번호는 민감한 정보이므로, JSON으로 데이터 이동간에 숨김
@@ -35,10 +38,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
-    @ManyToOne
-    @JoinColumn(name = "building_code")
-    private Building building;
+    @Column(name = "building_code")
+    private String buildingCode;
 
+    @ManyToOne
+    @JoinColumn(name = "building_id")
+    private Building building;
 
 
     public void addUserAuthority() {

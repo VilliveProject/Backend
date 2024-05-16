@@ -3,11 +3,14 @@ package com.villive.Backend.service;
 import com.villive.Backend.domain.Comment;
 import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
+import com.villive.Backend.domain.Posts;
+import com.villive.Backend.dto.BuildingCodeDto;
 import com.villive.Backend.dto.LogInRequestDto;
 import com.villive.Backend.dto.SignUpRequestDto;
 import com.villive.Backend.jwt.JwtTokenProvider;
 import com.villive.Backend.repository.CommentRepository;
 import com.villive.Backend.repository.MemberRepository;
+import com.villive.Backend.repository.PostsRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final CommentRepository commentRepository;
+    private final PostsRepository postsRepository;
 
     @Transactional
     public Long join(SignUpRequestDto requestDto) {
@@ -64,7 +68,7 @@ public class MemberService {
     }
 
     //
-    Comment findByIdAndMember(Long commentId, Member member){
+    Comment findByCommentAndMember(Long commentId, Member member){
         Comment comment;
 
         if(member.getRole().equals(MemberRole.ADMIN)) {
@@ -80,18 +84,21 @@ public class MemberService {
         return comment;
     }
 
-    Member getMemberFromToken(HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-        if (token == null) {
-            throw new IllegalArgumentException("Token is missing or invalid");
+    Posts findByPostsAndMember(Long id, Member member) {
+        Posts posts;
+        // ADMIN
+        if(member.getRole().equals(MemberRole.ADMIN)) {
+            posts = postsRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("게시글을 찾을 수 없습니다.")
+            );
+        } else {
+            posts = postsRepository.findByIdAndMemberId(id, member.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("게시글을 찾을 수 없거나 작성자만 삭제/수정할 수 있습니다.")
+            );
         }
-        System.out.println("getMemberFromToken 실행");
-
-        // 토큰에서 사용자 ID를 추출
-        String memberId = jwtTokenProvider.getUserPk(token);
-
-        // 추출한 사용자 ID로 Member 객체 조회
-        return memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("유효한 사용자가 아닙니다."));
+        return posts;
     }
+
+
+
 }

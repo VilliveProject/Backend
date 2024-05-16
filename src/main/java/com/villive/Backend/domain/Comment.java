@@ -26,9 +26,6 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private Boolean isAnonymous; // 익명 여부
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private String createdDate;
@@ -46,8 +43,7 @@ public class Comment {
 
     public Comment(CommentRequestDto commentRequestDto, Posts posts, Member member) {
         this.content = commentRequestDto.getContent();
-        this.writer = member.getName();
-        this.isAnonymous = commentRequestDto.getIsAnonymous();
+        this.writer = member.getNickname();
         this.posts = posts;
         this.member = member;
     }

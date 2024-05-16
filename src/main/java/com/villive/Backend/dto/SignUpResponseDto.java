@@ -2,6 +2,8 @@ package com.villive.Backend.dto;
 
 import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
@@ -11,6 +13,7 @@ public class SignUpResponseDto {
     private String memberId;
     private String password;
     private String name;
+    private String nickname;
     private String address;
     private MemberRole role;
 
@@ -19,6 +22,7 @@ public class SignUpResponseDto {
         this.memberId = member.getMemberId();
         this.password = member.getPassword();
         this.name = member.getName();
+        this.nickname = member.getNickname();
         this.address = member.getAddress();
         this.role = member.getRole();
 

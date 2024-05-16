@@ -1,6 +1,5 @@
 package com.villive.Backend.jwt;
 
-import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
@@ -29,6 +28,7 @@ public class JwtTokenProvider {
 
     // 토큰 유효 시간 (단위: 밀리초)
     @Value("${jwt.token-validity-in-seconds}")
+    private long validityInSeconds;
     private long validityInMilliseconds;
 
     @Autowired
@@ -38,6 +38,7 @@ public class JwtTokenProvider {
     // 객체 초기화, secretKey를 Base64로 인코딩
     @PostConstruct
     protected void init() {
+        validityInMilliseconds = validityInSeconds * 1000;
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
@@ -59,7 +60,7 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(String.valueOf(this.getUserPk(token)));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -68,7 +69,6 @@ public class JwtTokenProvider {
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
-
 
 
     // 토큰 유효성, 만료일자 확인
