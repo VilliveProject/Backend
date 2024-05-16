@@ -62,6 +62,7 @@ public class PostsController {
 
 
     // 게시글 좋아요
+    @Operation(summary = "게시글 좋아요")
     @PostMapping("/like/{id}")
     public ResponseEntity<MsgResponseDto> savePostsLike(@PathVariable Long id, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         return ResponseEntity.ok(postsService.savePostsLike(id, customUserDetails.getMember()));

@@ -14,7 +14,6 @@ public class SignUpResponseDto {
     private String password;
     private String name;
     private String nickname;
-    private String address;
     private MemberRole role;
 
     public SignUpResponseDto(Member member){
@@ -23,7 +22,6 @@ public class SignUpResponseDto {
         this.password = member.getPassword();
         this.name = member.getName();
         this.nickname = member.getNickname();
-        this.address = member.getAddress();
         this.role = member.getRole();
 
     }

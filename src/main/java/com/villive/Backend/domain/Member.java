@@ -1,6 +1,7 @@
 package com.villive.Backend.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.villive.Backend.dto.BuildingCodeRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +37,7 @@ public class Member {
     private String address; // 호수
 
     @Enumerated(EnumType.STRING)
-    private MemberRole role;
+    private MemberRole role = MemberRole.USER;
 
     @Column(name = "building_code")
     private String buildingCode;
@@ -58,5 +59,10 @@ public class Member {
         this.password = passwordEncoder.encode(this.password);
     }
 
+
+    public void addHomeInfo(BuildingCodeRequestDto buildingCodeRequestDto) {
+        this.buildingCode = buildingCodeRequestDto.getBuildingCode();
+        this.address = buildingCodeRequestDto.getAddress();
+    }
 
 }

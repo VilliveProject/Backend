@@ -1,18 +1,18 @@
 package com.villive.Backend.controller;
 
-import com.villive.Backend.dto.BuildingCodeDto;
+import com.villive.Backend.dto.BuildingCodeRequestDto;
+import com.villive.Backend.dto.BuildingCodeResponseDto;
 import com.villive.Backend.dto.LogInRequestDto;
 import com.villive.Backend.dto.SignUpRequestDto;
+import com.villive.Backend.jwt.CustomUserDetails;
 import com.villive.Backend.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,12 +38,10 @@ public class MemberController {
 
     }
 
-    /*
-    @PostMapping("/building-code")
-    public ResponseEntity<BuildingCodeDto> addBuildingCode(@RequestBody BuildingCodeDto buildingCodeDto, HttpServletRequest request){
-
-        return ResponseEntity.ok(memberService.addBuildingCode(buildingCodeDto, request));
+    @Operation(summary = "건물 코드", description = "건물 코드와 호수 입력")
+    @PatchMapping("/addinfo")
+    public ResponseEntity<BuildingCodeResponseDto> addInfo(@RequestBody BuildingCodeRequestDto buildingCodeRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        return ResponseEntity.ok(memberService.addHomeInfo(buildingCodeRequestDto, customUserDetails.getMember()));
     }
 
-     */
 }

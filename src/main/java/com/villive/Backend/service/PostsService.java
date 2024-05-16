@@ -27,6 +27,7 @@ public class PostsService {
     private final PostsLikeRepository postsLikeRepository;
 
     // 게시글 전체 조회
+    @Transactional(readOnly = true)
     public List<PostsResponseDto> getPostsList() {
 
         return postsRepository.findAllByOrderByCreatedDateDesc().stream()

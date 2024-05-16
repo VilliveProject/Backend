@@ -4,7 +4,8 @@ import com.villive.Backend.domain.Comment;
 import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
 import com.villive.Backend.domain.Posts;
-import com.villive.Backend.dto.BuildingCodeDto;
+import com.villive.Backend.dto.BuildingCodeRequestDto;
+import com.villive.Backend.dto.BuildingCodeResponseDto;
 import com.villive.Backend.dto.LogInRequestDto;
 import com.villive.Backend.dto.SignUpRequestDto;
 import com.villive.Backend.jwt.JwtTokenProvider;
@@ -17,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,13 +41,7 @@ public class MemberService {
 
         Member member = memberRepository.save(requestDto.toEntity());
         member.passwordEncode(passwordEncoder);
-
-        // 사용자 역할에 따라 권한 설정
-        if (requestDto.getRole().equals(MemberRole.ADMIN)) {
-            member.addAdminAuthority(); // ADMIN 권한 추가
-        } else {
-            member.addUserAuthority(); // 기본적으로 USER 권한 추가
-        }
+        member.addUserAuthority();
 
         return member.getId();
     }
@@ -60,12 +57,34 @@ public class MemberService {
         return jwtTokenProvider.createToken(member.getMemberId(), member.getRole());
     }
 
+    @Transactional
+    public BuildingCodeResponseDto addHomeInfo(BuildingCodeRequestDto buildingCodeRequestDto, Member member){
+
+        Optional<Member> existsAdminCode = memberRepository.findByRoleAndBuildingCode(MemberRole.ADMIN, buildingCodeRequestDto.getBuildingCode());
+
+        if(existsAdminCode.isPresent()){
+            member.addHomeInfo(buildingCodeRequestDto);
+            memberRepository.save(member);
+        } else {
+            throw new IllegalArgumentException("건물코드를 다시 확인하세요.");
+        }
+
+        return new BuildingCodeResponseDto(member);
+
+    }
+
+
+
+
+
     // 비밀번호 일치 여부 확인 메소드
     private void validateMatchedPassword(String rawPassword, String encodedPassword) {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
+
+
 
     //
     Comment findByCommentAndMember(Long commentId, Member member){

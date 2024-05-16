@@ -25,9 +25,6 @@ public class SignUpRequestDto {
     @Schema(description = "닉네임")
     private String nickname;
 
-    @Schema(description = "호수", example = "302")
-    private String address;
-
     @Schema(description = "이름")
     private String name;
 
@@ -41,8 +38,7 @@ public class SignUpRequestDto {
                 .password(password)
                 .name(name)
                 .nickname(nickname)
-                .address(address)
-                .role(role)
+//                .role(role)
                 .build();
     }
 
