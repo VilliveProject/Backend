@@ -4,15 +4,11 @@ import com.villive.Backend.domain.Comment;
 import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
 import com.villive.Backend.domain.Posts;
-import com.villive.Backend.dto.BuildingCodeRequestDto;
-import com.villive.Backend.dto.BuildingCodeResponseDto;
-import com.villive.Backend.dto.LogInRequestDto;
-import com.villive.Backend.dto.SignUpRequestDto;
+import com.villive.Backend.dto.*;
 import com.villive.Backend.jwt.JwtTokenProvider;
 import com.villive.Backend.repository.CommentRepository;
 import com.villive.Backend.repository.MemberRepository;
 import com.villive.Backend.repository.PostsRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,6 +51,18 @@ public class MemberService {
         log.info("로그인 성공: {}", requestDto.getMemberId());
 
         return jwtTokenProvider.createToken(member.getMemberId(), member.getRole());
+    }
+
+    // 회원 탈퇴
+    @Transactional
+    public void deleteMem(DeleteMemRequestDto deleteMemRequestDto, Member member){
+
+        if(!passwordEncoder.matches(deleteMemRequestDto.getPassword(), member.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        memberRepository.deleteById(member.getId());
+
     }
 
     @Transactional

@@ -42,9 +42,15 @@ public class Member {
     @Column(name = "building_code")
     private String buildingCode;
 
-    @ManyToOne
-    @JoinColumn(name = "building_id")
-    private Building building;
+//    @ManyToOne
+//    @JoinColumn(name = "building_id")
+//    private Building building;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Posts> postsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Comment> commentList = new ArrayList<>();
 
 
     public void addUserAuthority() {

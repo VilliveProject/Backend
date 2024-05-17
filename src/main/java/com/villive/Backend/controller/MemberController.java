@@ -1,15 +1,12 @@
 package com.villive.Backend.controller;
 
-import com.villive.Backend.dto.BuildingCodeRequestDto;
-import com.villive.Backend.dto.BuildingCodeResponseDto;
-import com.villive.Backend.dto.LogInRequestDto;
-import com.villive.Backend.dto.SignUpRequestDto;
+import com.villive.Backend.dto.*;
 import com.villive.Backend.jwt.CustomUserDetails;
 import com.villive.Backend.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +35,16 @@ public class MemberController {
 
     }
 
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/delMember")
+    private ResponseEntity<MsgResponseDto> deleteMem(@RequestBody DeleteMemRequestDto deleteMemRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        memberService.deleteMem(deleteMemRequestDto, customUserDetails.getMember());
+        return ResponseEntity.ok(new MsgResponseDto("회원탈퇴 완료", HttpStatus.OK.value()));
+    }
+
     @Operation(summary = "건물 코드", description = "건물 코드와 호수 입력")
     @PatchMapping("/addinfo")
-    public ResponseEntity<BuildingCodeResponseDto> addInfo(@RequestBody BuildingCodeRequestDto buildingCodeRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<BuildingCodeResponseDto> addHomeInfo(@RequestBody BuildingCodeRequestDto buildingCodeRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         return ResponseEntity.ok(memberService.addHomeInfo(buildingCodeRequestDto, customUserDetails.getMember()));
     }
 

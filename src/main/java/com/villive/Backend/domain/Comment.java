@@ -31,7 +31,7 @@ public class Comment {
     private String createdDate;
 
     // comment : member = N : 1 다대일 단방향 연관관계
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
