@@ -13,6 +13,7 @@ import java.util.List;
 @Entity
 @Builder // Lombok 빌더 패턴 구현을 위한 어노테이션
 @Getter
+@Setter
 @NoArgsConstructor // Lombok을 사용하여 기본 생성자 추가
 @AllArgsConstructor // 모든 필드를 매개 변수로 갖는 생성자 추가
 public class Member {
@@ -42,9 +43,9 @@ public class Member {
     @Column(name = "building_code")
     private String buildingCode;
 
-//    @ManyToOne
-//    @JoinColumn(name = "building_id")
-//    private Building building;
+    @ManyToOne
+    @JoinColumn(name = "building_id")
+    private Building building;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Posts> postsList = new ArrayList<>();
@@ -69,6 +70,10 @@ public class Member {
     public void addHomeInfo(BuildingCodeRequestDto buildingCodeRequestDto) {
         this.buildingCode = buildingCodeRequestDto.getBuildingCode();
         this.address = buildingCodeRequestDto.getAddress();
+    }
+
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
     }
 
 }

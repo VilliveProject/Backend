@@ -80,8 +80,44 @@ public class MemberService {
         return new BuildingCodeResponseDto(member);
 
     }
+    
+    // 닉네임 변경
+    @Transactional
+    public UpdateNicknameDto updateNickname(UpdateNicknameDto updateNicknameDto, Member member){
+
+        member.setNickname(updateNicknameDto.getNickname());
+        memberRepository.save(member);
+
+        return updateNicknameDto;
+
+    }
+
+    // 닉네임 중복 확인
+    public Boolean checkNickname(String nickname) {
+        return memberRepository.existsByNickname(nickname);
+    }
 
 
+    // 비밀번호 변경
+    @Transactional
+    public UpdatePwdRequestDto updatePassword(UpdatePwdRequestDto updatePwdRequestDto, Member member) {
+        // 현재 비밀번호가 맞는지 확인
+        if (!passwordEncoder.matches(updatePwdRequestDto.getCurrentPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 올바르지 않습니다.");
+        }
+
+        // 새 비밀번호의 유효성 검증 (예: 길이, 복잡성 등)은 여기서 수행할 수 있습니다.
+        // 이 예시에서는 생략합니다.
+
+        // 새 비밀번호 암호화
+        String encodedNewPassword = passwordEncoder.encode(updatePwdRequestDto.getNewPassword());
+
+        // 비밀번호 업데이트
+        member.setPassword(encodedNewPassword);
+        memberRepository.save(member);
+
+        return updatePwdRequestDto;
+    }
 
 
 
@@ -125,7 +161,4 @@ public class MemberService {
         }
         return posts;
     }
-
-
-
 }

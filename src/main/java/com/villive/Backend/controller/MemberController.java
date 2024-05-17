@@ -35,6 +35,25 @@ public class MemberController {
 
     }
 
+    @Operation(summary = "비밀번호 변경")
+    @PutMapping("/updatePassword")
+    public ResponseEntity<UpdatePwdRequestDto> updatePassword(@RequestBody UpdatePwdRequestDto updatePwdRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        return ResponseEntity.ok(memberService.updatePassword(updatePwdRequestDto, customUserDetails.getMember()));
+    }
+
+    @Operation(summary = "닉네임 변경")
+    @PutMapping("/updateNickname")
+    public ResponseEntity<UpdateNicknameDto> updateNickname(@RequestBody UpdateNicknameDto updateNicknameDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+        return ResponseEntity.ok(memberService.updateNickname(updateNicknameDto, customUserDetails.getMember()));
+    }
+
+
+    @Operation(summary = "닉네임 중복 확인", description = "닉네임이 존재하면 true, 없으면 false")
+    @GetMapping("/isExist/{nickname}")
+    public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname){
+        return ResponseEntity.ok(memberService.checkNickname(nickname));
+    }
+
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/delMember")
     private ResponseEntity<MsgResponseDto> deleteMem(@RequestBody DeleteMemRequestDto deleteMemRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
@@ -43,7 +62,7 @@ public class MemberController {
     }
 
     @Operation(summary = "건물 코드", description = "건물 코드와 호수 입력")
-    @PatchMapping("/addinfo")
+    @PostMapping("/addinfo")
     public ResponseEntity<BuildingCodeResponseDto> addHomeInfo(@RequestBody BuildingCodeRequestDto buildingCodeRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         return ResponseEntity.ok(memberService.addHomeInfo(buildingCodeRequestDto, customUserDetails.getMember()));
     }
