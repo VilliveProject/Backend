@@ -1,5 +1,6 @@
 package com.villive.Backend.controller;
 
+import com.villive.Backend.domain.PostCategory;
 import com.villive.Backend.domain.PostsLike;
 import com.villive.Backend.dto.MsgResponseDto;
 import com.villive.Backend.dto.PostsRequestDto;
@@ -29,6 +30,14 @@ public class PostsController {
     @GetMapping("/")
     public ResponseEntity<List<PostsResponseDto>> getPostsList() {
         return ResponseEntity.ok(postsService.getPostsList());
+    }
+
+    // 카테고리별 게시글 조회
+    @Operation(summary = "카테고리별 게시글 조회")
+    @GetMapping("category/{category}")
+    public ResponseEntity<List<PostsResponseDto>> getPostsByCategory(@PathVariable("category") PostCategory postCategory){
+        List<PostsResponseDto> posts = postsService.getPostsListByCategory(postCategory);
+        return ResponseEntity.ok(posts);
     }
 
     // 게시글 선택 조회

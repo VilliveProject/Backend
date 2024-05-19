@@ -1,9 +1,6 @@
 package com.villive.Backend.service;
 
-import com.villive.Backend.domain.Comment;
-import com.villive.Backend.domain.Posts;
-import com.villive.Backend.domain.Member;
-import com.villive.Backend.domain.PostsLike;
+import com.villive.Backend.domain.*;
 import com.villive.Backend.dto.*;
 import com.villive.Backend.repository.PostsLikeRepository;
 import com.villive.Backend.repository.PostsRepository;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,6 +31,14 @@ public class PostsService {
         return postsRepository.findAllByOrderByCreatedDateDesc().stream()
                 .map(PostsResponseDto::new)
                 .toList();
+    }
+
+    // 카테고리별 게시글 조회
+    @Transactional(readOnly = true)
+    public List<PostsResponseDto> getPostsListByCategory(PostCategory category) {
+        return postsRepository.findByCategoryOrderByCreatedDateDesc(category).stream()
+                .map(PostsResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     // 게시글 선택 조회
