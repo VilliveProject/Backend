@@ -65,6 +65,7 @@ public class MemberService {
 
     }
 
+    // 건물 코드 + 호수 등록
     @Transactional
     public BuildingCodeResponseDto addHomeInfo(BuildingCodeRequestDto buildingCodeRequestDto, Member member){
 
@@ -105,9 +106,6 @@ public class MemberService {
         if (!passwordEncoder.matches(updatePwdRequestDto.getCurrentPassword(), member.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 올바르지 않습니다.");
         }
-
-        // 새 비밀번호의 유효성 검증 (예: 길이, 복잡성 등)은 여기서 수행할 수 있습니다.
-        // 이 예시에서는 생략합니다.
 
         // 새 비밀번호 암호화
         String encodedNewPassword = passwordEncoder.encode(updatePwdRequestDto.getNewPassword());

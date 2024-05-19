@@ -30,7 +30,6 @@ public class Member {
 
     private String name;
 
-
     @JsonIgnore // 비밀번호는 민감한 정보이므로, JSON으로 데이터 이동간에 숨김
     @Column(nullable = false)
     private String password;
