@@ -53,6 +53,9 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Complain> complainList = new ArrayList<>();
+
 
     public void addUserAuthority() {
         this.role = MemberRole.USER;
