@@ -30,7 +30,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	implementation 'mysql:mysql-connector-java:8.0.36'
+	implementation 'mysql:mysql-connector-java:8.0.32'
 
 	// Spring Security 설정
 	implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -49,6 +49,10 @@ dependencies {
 
 compileJava {
 	options.compilerArgs += ['-parameters']
+}
+
+bootJar {
+	archiveFileName = 'villive_backend.jar'
 }
 
 tasks.named('test') {
