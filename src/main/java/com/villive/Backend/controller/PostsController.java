@@ -8,6 +8,8 @@ import com.villive.Backend.dto.PostsResponseDto;
 import com.villive.Backend.jwt.CustomUserDetails;
 import com.villive.Backend.service.PostsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +50,7 @@ public class PostsController {
     }
 
     // 게시글 작성
-    @Operation(summary = "게시글 작성", description = "게시글을 작성한다.")
+    @Operation(summary = "게시글 작성", description = "게시글 작성")
     @PostMapping("/write")
     public ResponseEntity<PostsResponseDto> createPosts(@RequestBody PostsRequestDto postsRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         PostsResponseDto responseDto = postsService.createPosts(postsRequestDto, customUserDetails.getMember());
@@ -56,7 +58,7 @@ public class PostsController {
     }
     
     // 게시글 수정
-    @Operation(summary = "게시글 수정", description = "게시글 수정하는 .")
+    @Operation(summary = "게시글 수정", description = "{id}에 게시글 번호를 입력하세요.")
     @PutMapping("/{id}")
     public ResponseEntity<PostsResponseDto> updatePosts(@PathVariable Long id, @RequestBody PostsRequestDto postsRequestDto, @AuthenticationPrincipal CustomUserDetails customUserDetails){
         return ResponseEntity.ok(postsService.updatePosts(id, postsRequestDto, customUserDetails.getMember()));
