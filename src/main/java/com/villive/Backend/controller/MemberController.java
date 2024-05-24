@@ -19,7 +19,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @Operation(summary = "회원가입", description = "회워")
+    @Operation(summary = "회원가입", description = "회원가입하는 API입니다.")
     @PostMapping("/join")
     public Long join(@RequestBody SignUpRequestDto requestDto) {
 
@@ -27,7 +27,7 @@ public class MemberController {
 
     }
 
-    @Operation(summary = "로그인")
+    @Operation(summary = "로그인", description = "아이디와 비밀번호로 로그인하는 API입니다.")
     @PostMapping("/login")
     public String login(@RequestBody LogInRequestDto requestDto) {
 

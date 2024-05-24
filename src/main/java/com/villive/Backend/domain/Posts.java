@@ -1,6 +1,7 @@
 package com.villive.Backend.domain;
 
 import com.villive.Backend.dto.PostsRequestDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,16 +13,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "게시판 정보")
 public class Posts extends BaseTimeEntity {
 
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "제목")
     private String title;
 
+    @Schema(description = "내용")
     private String contents;
 
+    @Schema(description = "작성자(닉네임)")
     private String writer;
 
     @Enumerated(EnumType.STRING)
