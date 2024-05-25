@@ -13,7 +13,6 @@ public class NoticeResponseDto {
     private String title;
     private String contents;
     private String writer;
-//    private String buildingName;
     private String createdDate;
 
     public NoticeResponseDto(Notice notice){
@@ -21,7 +20,6 @@ public class NoticeResponseDto {
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.writer = notice.getWriter();
-//        this.buildingName = notice.getBuildingName();
         this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
     }
 }

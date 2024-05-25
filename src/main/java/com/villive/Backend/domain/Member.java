@@ -42,9 +42,6 @@ public class Member {
     @Column(name = "building_code")
     private String buildingCode;
 
-    @ManyToOne
-    @JoinColumn(name = "building_id")
-    private Building building;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Posts> postsList = new ArrayList<>();
