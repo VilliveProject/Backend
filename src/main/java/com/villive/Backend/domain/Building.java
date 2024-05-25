@@ -17,5 +17,4 @@ public class Building {
     @Column(name = "building_name")
     private String buildingName;
 
-
 }
