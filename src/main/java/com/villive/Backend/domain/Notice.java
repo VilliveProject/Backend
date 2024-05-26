@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Builder
 @Getter
@@ -26,11 +28,9 @@ public class Notice {
 
     private String writer;
 
-    private String buildingName;
-
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

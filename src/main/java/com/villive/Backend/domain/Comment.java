@@ -28,7 +28,7 @@ public class Comment {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     // comment : member = N : 1 다대일 단방향 연관관계
     @ManyToOne(fetch = FetchType.LAZY)

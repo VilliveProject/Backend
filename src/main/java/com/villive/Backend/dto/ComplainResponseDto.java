@@ -28,7 +28,7 @@ public class ComplainResponseDto {
         this.title = complain.getTitle();
         this.contents = complain.getContents();
         this.writer = complain.getWriter();
-        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        this.createdDate = complain.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         this.status = complain.getStatus();
         this.type = complain.getType();
     }

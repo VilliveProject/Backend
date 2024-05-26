@@ -20,6 +20,6 @@ public class NoticeResponseDto {
         this.title = notice.getTitle();
         this.contents = notice.getContents();
         this.writer = notice.getWriter();
-        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        this.createdDate = notice.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
     }
 }
