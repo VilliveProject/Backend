@@ -67,4 +67,14 @@ public class CarService {
         return new MsgResponseDto("차량 상태가 성공적으로 업데이트되었습니다.", HttpStatus.OK.value());
     }
 
+    @Transactional
+    public MsgResponseDto deleteCar(Long carId, Member member) {
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new IllegalArgumentException("차량을 찾을 수 없습니다."));
+
+        carRepository.delete(car);
+
+        return new MsgResponseDto("차량이 성공적으로 삭제되었습니다.", HttpStatus.OK.value());
+    }
+
 }

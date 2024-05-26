@@ -55,4 +55,11 @@ public class CarController {
         MsgResponseDto responseDto = carService.updateCarStatus(carId, status, customUserDetails.getMember());
         return ResponseEntity.ok(responseDto);
     }
+
+    @Operation(summary = "차량 삭제", description = "차량 삭제는 소유자만 할 수 있습니다.")
+    @DeleteMapping("/delete/{carId}")
+    public ResponseEntity<MsgResponseDto> deleteCar(@PathVariable Long carId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        MsgResponseDto responseDto = carService.deleteCar(carId, customUserDetails.getMember());
+        return ResponseEntity.ok(responseDto);
+    }
 }
