@@ -67,4 +67,11 @@ public class MemberController {
         return ResponseEntity.ok(memberService.addHomeInfo(buildingCodeRequestDto, customUserDetails.getMember()));
     }
 
+    @Operation(summary = "사용자 이름 조회", description = "로그인한 사용자의 이름을 조회하는 API입니다.")
+    @GetMapping("/name")
+    public ResponseEntity<String> getMemberName(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        String name = memberService.getMemberName(customUserDetails);
+        return ResponseEntity.ok(name);
+    }
+
 }

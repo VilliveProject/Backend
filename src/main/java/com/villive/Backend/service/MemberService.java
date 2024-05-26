@@ -5,6 +5,7 @@ import com.villive.Backend.domain.Member;
 import com.villive.Backend.domain.MemberRole;
 import com.villive.Backend.domain.Posts;
 import com.villive.Backend.dto.*;
+import com.villive.Backend.jwt.CustomUserDetails;
 import com.villive.Backend.jwt.JwtTokenProvider;
 import com.villive.Backend.repository.CommentRepository;
 import com.villive.Backend.repository.MemberRepository;
@@ -126,7 +127,10 @@ public class MemberService {
         }
     }
 
-
+    public String getMemberName(CustomUserDetails userDetails) {
+        Member member = userDetails.getMember();
+        return member.getName();
+    }
 
     //
     Comment findByCommentAndMember(Long commentId, Member member){
