@@ -132,22 +132,7 @@ public class MemberService {
         return member.getName();
     }
 
-    //
-    Comment findByCommentAndMember(Long commentId, Member member){
-        Comment comment;
 
-        if(member.getRole().equals(MemberRole.ADMIN)) {
-            comment = commentRepository.findById(commentId).orElseThrow(
-                    () -> new IllegalArgumentException("댓글이 없습니다.")
-            );
-        } else {
-            comment = commentRepository.findByIdAndMemberId(commentId, member.getId()).orElseThrow(
-                    () -> new IllegalArgumentException("사용자가 작성한 댓글이 아닙니다.")
-            );
-        }
-
-        return comment;
-    }
 
     Posts findByPostsAndMember(Long id, Member member) {
         Posts posts;

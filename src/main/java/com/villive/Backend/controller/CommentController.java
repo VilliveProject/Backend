@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,19 @@ public class CommentController {
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/{postId}/{commentId}")
     public ResponseEntity<MsgResponseDto> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        commentService.deleteComment(postId, commentId, customUserDetails.getMember());
-        return ResponseEntity.ok(commentService.deleteComment(postId, commentId, customUserDetails.getMember()));
+        MsgResponseDto response;
+        try {
+            response = commentService.deleteComment(postId, commentId, customUserDetails.getMember());
+        } catch (IllegalArgumentException e) {
+            // 존재하지 않는 게시글 또는 댓글에 대한 예외 처리
+            System.err.println("댓글 삭제 중 오류 발생: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MsgResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        } catch (Exception e) {
+            // 기타 예외 처리
+            System.err.println("댓글 삭제 중 오류 발생: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new MsgResponseDto("내부 서버 오류", HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        }
+        return ResponseEntity.ok(response);
     }
 
 
