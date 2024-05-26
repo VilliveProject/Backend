@@ -40,7 +40,7 @@ public class NoticeService {
 
     // 공지사항 조회
     public List<NoticeResponseDto> getAllNotices() {
-        List<Notice> notices = noticeRepository.findAll();
+        List<Notice> notices = noticeRepository.findAllByOrderByCreatedDateDesc();
         return notices.stream().map(NoticeResponseDto::new).collect(Collectors.toList());
     }
 
