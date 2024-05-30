@@ -44,15 +44,19 @@ public class MemberService {
     }
 
     @Transactional
-    public String login(LogInRequestDto requestDto) {
+    public LoginResponseDto login(LogInRequestDto requestDto) {
         Member member = memberRepository.findByMemberId(requestDto.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("가입된 아이디가 아닙니다."));
         validateMatchedPassword(requestDto.getPassword(), member.getPassword());
 
         log.info("로그인 성공: {}", requestDto.getMemberId());
 
-        return jwtTokenProvider.createToken(member.getMemberId(), member.getRole());
+        boolean hasBuildingCode = member.getBuildingCode() != null;
+
+        String token = jwtTokenProvider.createToken(member.getMemberId(), member.getRole());
+        return new LoginResponseDto(token, hasBuildingCode);
     }
+
 
     // 회원 탈퇴
     @Transactional

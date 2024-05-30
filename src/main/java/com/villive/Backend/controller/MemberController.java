@@ -29,11 +29,11 @@ public class MemberController {
 
     @Operation(summary = "로그인", description = "아이디와 비밀번호로 로그인하는 API입니다.")
     @PostMapping("/login")
-    public String login(@RequestBody LogInRequestDto requestDto) {
-
-        return memberService.login(requestDto);
-
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LogInRequestDto requestDto) {
+        LoginResponseDto response = memberService.login(requestDto);
+        return ResponseEntity.ok(response);
     }
+
 
     @Operation(summary = "비밀번호 변경")
     @PutMapping("/updatePassword")
